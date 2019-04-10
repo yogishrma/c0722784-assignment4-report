@@ -1,75 +1,92 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace ConsoleApp4
+
+namespace ConsoleApp1
 {
-    class Program
+    class ConsoleApp5
     {
         ArrayList Beowulf;
-        int LineCount = 0;
+        int counterletters = 0;
+        int countSpaces = 0;
         static void Main(string[] args)
-
         {
-            Program p = new Program();
-            p.Beowulf = new ArrayList();
-            p.ReadTextFiles();
-
+            Program a = new Program();
+            a.Beowulf = new ArrayList();
+            a.ReadTextFiles();
         }
+
         public void Run() { this.ReadTextFiles(); }
         public void ReadTextFiles()
         {
-            using (StreamReader file = new StreamReader(@"U:\Users\722784/Beowulf.txt"))
 
+            using (StreamReader sr = new StreamReader("U:/Users/722784/Beowulf.txt"))
             {
-                int counter = 0;
-
-                int number = 0;
-
                 string line;
+                int counter = 0;
+                int a = 0, myWord = 1;
+                int averageLetterPerWord;
+                ArrayList lineNumbers = new ArrayList();
+                int linenum = 1;
+                lineNumbers.Add(22);
 
-                while ((line = file.ReadLine()) != null)
-
+                while ((line = sr.ReadLine()) != null)
                 {
-
-                    if (line.Contains("Sea") && line.Contains("Fare") || line.Contains("sea") && line.Contains("fare"))
-
-                    {
-
-                        int x = counter - 1;
-
-                        number++;
-
-                    }
-
+                    Console.WriteLine(line);
+                    Beowulf.Add(line);
+                    FindNumberOfBlankSpaces(line);
                     counter++;
 
+                    if (line.Substring(0).Contains("Sea") || line.Substring(0).Contains("sea") && line.Substring(0).Contains("Fare") || line.Substring(0).Contains("fare"))
+                    {
+                        lineNumbers.Add(linenum);
+                    }
+
+                    // COUNTING THE NUMBER OF WORDS  SECTION B
+                    while (a <= line.Length - 1)
+                    {
+                        if (line[a] == ' ' || line[a] == '\n' || line[a] == '\t')
+                        {
+                            myWord++;
+                        }
+                        a++;
+                    }
+                    a = 0;
+
+                    linenum++;  // SECTION C
                 }
+                // COUNTING THE NUMBER OF AVERAGE LETTERS IN WORD SECTION E
+                averageLetterPerWord = counterletters / countSpaces;
 
-                Console.WriteLine($"The number of lines that contains *Sea* and *Fare* are {number}");
+                // SECTION A: NUMBER OF LINES
+                Console.WriteLine("\n\n\n\n********************************\nThe number of lines in the paragraph is " + counter);
+                Console.WriteLine("The number of words in paragraph is " + myWord);
+                Console.WriteLine("The number of average letters per word is  " + averageLetterPerWord);
 
-                file.Close();
 
+                // SECTION C: WORDS WHICH CONTAINS BOTH SEA AND FARE
+                Console.WriteLine("The line which contains both sea and fare\n");
+                foreach (int i in lineNumbers)
+                {
+                    Console.Write(i + " ");
+                }
+                Console.ReadLine();
             }
 
         }
-
-
         public int FindNumberOfBlankSpaces(string line)
         {
-            int countletters = 0;
-            int countSpaces = 0;
             foreach (char c in line)
             {
-                if (char.IsLetter(c)) { countletters++; }
+                if (char.IsLetter(c)) { counterletters++; }
                 if (char.IsWhiteSpace(c)) { countSpaces++; }
             }
             return countSpaces;
-
         }
     }
 }
